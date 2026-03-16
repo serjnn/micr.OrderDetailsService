@@ -6,16 +6,11 @@ import com.serjnn.OrderDetailsService.dto.OrderDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,21 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Testcontainers
-class OrderDetailsControllerIntegrationTest {
-
-    @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine")
-            .withDatabaseName("testdb")
-            .withUsername("test")
-            .withPassword("test");
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
+class OrderDetailsControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -57,15 +38,7 @@ class OrderDetailsControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        jdbcTemplate.execute("DROP TABLE IF EXISTS order_details;");
-        jdbcTemplate.execute("CREATE TABLE order_details (" +
-                "id SERIAL PRIMARY KEY, " +
-                "uuid UUID, " +
-                "client_id BIGINT, " +
-                "products_ids VARCHAR(255), " +
-                "sum NUMERIC, " +
-                "created_at TIMESTAMP" +
-                ");");
+        jdbcTemplate.execute("TRUNCATE TABLE order_details;");
     }
 
     @Test
@@ -113,7 +86,7 @@ class OrderDetailsControllerIntegrationTest {
                 .andExpect(status().isOk());
 
         // When - Remove Order
-        mockMvc.perform(delete("/api/vv1/orders/" + orderId))
+        mockMvc.perform(delete("/api/v1/orders/" + orderId))
                 .andExpect(status().isOk());
 
         // Then - Verify it's deleted
