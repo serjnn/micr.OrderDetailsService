@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -80,13 +81,13 @@ class OrderDetailsControllerIntegrationTest {
         );
 
         // When - Create Order
-        mockMvc.perform(post("/api/v1/addOrder")
+        mockMvc.perform(post("/api/v1/orders")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(orderDTO)))
                 .andExpect(status().isOk());
 
         // Then - Find by Client ID
-        mockMvc.perform(get("/api/v1/byClient/" + clientId))
+        mockMvc.perform(get("/api/v1/orders/client/" + clientId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].uuid").value(orderId.toString()))
                 .andExpect(jsonPath("$[0].clientId").value(clientId))
@@ -106,15 +107,13 @@ class OrderDetailsControllerIntegrationTest {
                 new BigDecimal("50.00")
         );
 
-        mockMvc.perform(post("/api/v1/addOrder")
+        mockMvc.perform(post("/api/v1/orders")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(orderDTO)))
                 .andExpect(status().isOk());
 
         // When - Remove Order
-        mockMvc.perform(post("/api/v1/removeOrder")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(orderId)))
+        mockMvc.perform(delete("/api/vv1/orders/" + orderId))
                 .andExpect(status().isOk());
 
         // Then - Verify it's deleted

@@ -11,23 +11,23 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/orders")
 public class OrderDetailsController {
 
     private final OrderDetailsService orderDetailsService;
 
-    @GetMapping("/byClient/{id}")
+    @GetMapping("/client/{id}")
     public List<OrderDetails> findByClientId(@PathVariable("id") Long id) {
         return orderDetailsService.findByClientId(id);
     }
 
-    @PostMapping("/addOrder")
+    @PostMapping
     public void save(@RequestBody OrderDTO orderDTO) {
         orderDetailsService.createOrder(orderDTO);
     }
 
-    @PostMapping("/removeOrder")
-    public void remove(@RequestBody UUID uuid) {
+    @DeleteMapping("/{uuid}")
+    public void remove(@PathVariable("uuid") UUID uuid) {
         orderDetailsService.removeOrder(uuid);
     }
 }
