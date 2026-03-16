@@ -1,16 +1,39 @@
 package com.serjnn.OrderDetailsService.repo;
 
-
 import com.serjnn.OrderDetailsService.model.OrderDetails;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
-public interface OrderDetailsRepository extends ReactiveCrudRepository<OrderDetails, Long> {
-    Flux<OrderDetails> findByClientId(long id);
+@Repository
+@RequiredArgsConstructor
+public class OrderDetailsRepository {
 
-    Mono<Void> deleteByUuid(UUID uuid);
+    private final JdbcTemplate jdbcTemplate;
 
+    public List<OrderDetails> findByClientId(long id) {
+        String sql = "SELECT * FROM order_details WHERE client_id = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(OrderDetails.class), id);
+    }
+
+    public void save(OrderDetails orderDetails) {
+        String sql = "INSERT INTO order_details (uuid, client_id, products_ids, sum, created_at) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(
+                sql,
+                orderDetails.uuid(),
+                orderDetails.clientId(),
+                orderDetails.productsIds(),
+                orderDetails.sum(),
+                orderDetails.createdAt()
+        );
+    }
+
+    public void deleteByUuid(UUID uuid) {
+        String sql = "DELETE FROM order_details WHERE uuid = ?";
+        jdbcTemplate.update(sql, uuid);
+    }
 }
