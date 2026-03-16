@@ -113,7 +113,7 @@ class OrderDetailsControllerIntegrationTest {
                 .andExpect(status().isOk());
 
         // When - Remove Order
-        mockMvc.perform(delete("/api/vv1/orders/" + orderId))
+        mockMvc.perform(delete("/api/v1/orders/" + orderId))
                 .andExpect(status().isOk());
 
         // Then - Verify it's deleted

@@ -27,7 +27,7 @@ public class OrderDetailsService {
                 null,
                 orderDTO.orderId(),
                 orderDTO.clientId(),
-                this.getProductIds(orderDTO.items()),
+                getProductIds(orderDTO.items()),
                 orderDTO.totalSum(),
                 LocalDateTime.now());
         orderDetailsRepository.save(orderDetails);
