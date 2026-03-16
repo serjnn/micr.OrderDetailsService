@@ -7,6 +7,7 @@ import com.serjnn.OrderDetailsService.repo.OrderDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -23,10 +24,12 @@ public class OrderDetailsService {
 
     public void createOrder(OrderDTO orderDTO) {
         OrderDetails orderDetails = new OrderDetails(
+                null,
                 orderDTO.orderId(),
                 orderDTO.clientId(),
                 this.getProductIds(orderDTO.items()),
-                orderDTO.totalSum());
+                orderDTO.totalSum(),
+                LocalDateTime.now());
         orderDetailsRepository.save(orderDetails);
     }
 

@@ -1,10 +1,13 @@
 spring:
-  r2dbc:
-    driver-class-name: org.postgresql.Driver
-    url: r2dbc:postgresql://localhost:5432/micr-synch
+  datasource:
+    url: jdbc:postgresql://localhost:5432/micr-synch
     username: qwe
     password: qwe
-
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    user: qwe
+    password: qwe
+    url: jdbc:postgresql://localhost:5432/micr-synch
   application:
     name: order
 
