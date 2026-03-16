@@ -1,12 +1,10 @@
 spring:
   r2dbc:
     driver-class-name: org.postgresql.Driver
-    url: r2dbc:postgresql://localhost:5432/orderdetails
-    username: postgres
-    password: Vaifery111
+    url: r2dbc:postgresql://localhost:5432/micr-synch
+    username: qwe
+    password: qwe
 
-  main:
-    allow-circular-references: true
   application:
     name: order
 
