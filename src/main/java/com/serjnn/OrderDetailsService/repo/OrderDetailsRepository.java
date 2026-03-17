@@ -21,8 +21,7 @@ public class OrderDetailsRepository {
     }
 
     public void save(OrderDetails orderDetails) {
-        String sql =
-                "INSERT INTO order_details (uuid, client_id, products_ids, sum, created_at) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO order_details (uuid, client_id, products_ids, sum, created_at) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(
                 sql,
                 orderDetails.uuid(),
