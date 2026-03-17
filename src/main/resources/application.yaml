@@ -5,9 +5,9 @@ spring:
     password: qwe
     driver-class-name: org.postgresql.Driver
   flyway:
-    user: qwe
-    password: qwe
-    url: jdbc:postgresql://localhost:5432/micr-synch
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
   application:
     name: order
 
