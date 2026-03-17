@@ -23,9 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class OrderDetailsControllerIntegrationTest extends AbstractIntegrationTest {
+
+public class OrderDetailsControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
