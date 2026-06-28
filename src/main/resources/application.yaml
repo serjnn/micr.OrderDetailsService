@@ -1,12 +1,44 @@
 spring:
-  r2dbc:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/micr-synch}
+    username: ${DB_USERNAME:qwe}
+    password: ${DB_PASSWORD:qwe}
     driver-class-name: org.postgresql.Driver
-    url: r2dbc:postgresql://localhost:5432/micr-synch
-    username: qwe
-    password: qwe
-
+  flyway:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
   application:
-    name: order
+    name: ${APP_NAME:order}
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_URL:http://localhost:9411/api/v2/spans}
 
 server:
-  port: 7003
+  port: ${SERVER_PORT:7003}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+    register-with-eureka: ${EUREKA_REGISTER:true}
+    fetch-registry: ${EUREKA_FETCH:true}
+  instance:
+    prefer-ip-address: true
+
+logging:
+  pattern:
+    console: "%clr(%d{HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    root: info
+    org.springframework: warn
+    com.zaxxer.hikari: warn
+    org.hibernate: warn
+    com.netflix.discovery: warn
+    com.serjnn: info

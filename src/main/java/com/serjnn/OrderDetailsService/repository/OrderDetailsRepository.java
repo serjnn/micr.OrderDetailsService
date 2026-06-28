@@ -2,7 +2,7 @@ package com.serjnn.OrderDetailsService.repository;
 
 import com.serjnn.OrderDetailsService.model.OrderDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +17,7 @@ public class OrderDetailsRepository {
 
     public List<OrderDetails> findByClientId(long id) {
         String sql = "SELECT * FROM order_details WHERE client_id = ?";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(OrderDetails.class), id);
+        return jdbcTemplate.query(sql, new DataClassRowMapper<>(OrderDetails.class), id);
     }
 
     public void save(OrderDetails orderDetails) {

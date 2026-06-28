@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,10 +28,12 @@ public class OrderDetailsService {
     public void createOrder(OrderDTO orderDTO) {
         log.info("Creating order: {}", orderDTO);
         OrderDetails orderDetails = new OrderDetails(
+                null,
                 orderDTO.orderId(),
                 orderDTO.clientId(),
-                this.getProductIds(orderDTO.items()),
-                orderDTO.totalSum());
+                getProductIds(orderDTO.items()),
+                orderDTO.totalSum(),
+                LocalDateTime.now());
         orderDetailsRepository.save(orderDetails);
         log.info("Successfully saved order details for order ID: {}", orderDTO.orderId());
     }
