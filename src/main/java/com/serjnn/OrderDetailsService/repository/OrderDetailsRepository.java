@@ -1,4 +1,4 @@
-package com.serjnn.OrderDetailsService.repo;
+package com.serjnn.OrderDetailsService.repository;
 
 import com.serjnn.OrderDetailsService.model.OrderDetails;
 import lombok.RequiredArgsConstructor;
